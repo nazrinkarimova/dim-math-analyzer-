@@ -8,16 +8,14 @@ on:
 
 jobs:
 
-  
   # CI — Build & Test
-  
   Build_Test:
     runs-on: ubuntu-latest
-    
-env:
+
+    env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-      
- steps:
+
+    steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
@@ -42,7 +40,6 @@ env:
 
 
   # CD — Build & Deploy 
-  
   Build_Deploy:
     needs: Build_Test
     runs-on: ubuntu-latest
@@ -51,7 +48,7 @@ env:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Deployment imitasiya
         run: |
