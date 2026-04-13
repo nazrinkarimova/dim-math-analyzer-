@@ -1,0 +1,62 @@
+name: Math CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+
+  
+  # CI — Build & Test
+  
+  Build_Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Python quraşdır
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+
+      - name: Dependency quraşdır
+        run: |
+          pip install -r requirements.txt
+
+      - name: Script test (run)
+        run: |
+          python analyze.py
+
+      - name: Report artifact upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: report.csv
+
+
+  # CD — Build & Deploy 
+  
+  Build_Deploy:
+    needs: Build_Test
+    runs-on: ubuntu-latest
+
+    if: github.event_name == 'push'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deployment imitasiya
+        run: |
+          mkdir release
+          echo "Deployment successful 🚀" > release/log.txt
+
+      - name: Release artifact upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-files
+          path: release/
